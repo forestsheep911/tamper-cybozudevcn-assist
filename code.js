@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         cybozudevcn-assist
 // @namespace    https://github.com/forestsheep911/tamper-cybozudevcn-assist
-// @version      0.15
+// @version      0.16
 // @description  cybozu开发者网站中文版辅助工具ForDLD成员
 // @author       bxu
 // @match        https://cybozudev.kf5.com/hc/kb/article/*
