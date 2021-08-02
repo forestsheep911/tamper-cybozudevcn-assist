@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         cybozudevcn-assist
 // @namespace    https://github.com/forestsheep911/tamper-cybozudevcn-assist
-// @version      0.18
+// @version      0.20
 // @description  cybozu开发者网站中文版辅助工具ForDLD成员
 // @author       bxu
 // @match        https://cybozudev.kf5.com/hc/kb/article/*
@@ -13,7 +13,7 @@
 (function () {
   "use strict";
 
-  const managePerfix = "https://bozuman.cybozu.com/k/20708/show#record="
+  const managePerfix = "https://bozuman.cybozu.com/k/20708/show#record=";
   const buttonStyle =
     "box-sizing: border-box;margin-left:12px;font-family: inherit;display: inline-block;padding: 6px 12px;line-height: 1.128571429;text-align: center;vertical-align: middle;cursor: pointer;border: 1px solid transparent;border-radius: 4px;user-select: none;color: #fff;background-color: #f0ad4e;border-color: #eea236;font-size:11px";
 
@@ -34,19 +34,31 @@
 
   // 适配URL添加按钮
   function addButton(pareTable) {
+    const regexja = /articles\/(\d+)/;
+    const regexzh = /article\/(\d+)/;
     for (let i = 0; i < pareTable.length; i++) {
-      if (`${pareTable[i].zh}/`.includes(window.location.pathname)) {
+      const matchedResultJa = `${pareTable[i].ja}/`.match(regexja);
+      const matchedResultZh = `${pareTable[i].zh}/`.match(regexzh);
+      if (
+        matchedResultZh &&
+        window.location.pathname.includes(matchedResultZh[1])
+      ) {
         let eles = document.getElementsByTagName("h2");
         if (eles.length > 0) {
-          let findPareButton = document.createElement("a");
-          findPareButton.setAttribute("href", pareTable[i].ja);
-          findPareButton.setAttribute("target", "_blank");
-          findPareButton.setAttribute("style", buttonStyle);
-          findPareButton.innerText = "日语原版";
-          eles[0].insertBefore(findPareButton, eles[0].lastChild.nextSibling);
+          if (pareTable[i].ja) {
+            let findPareButton = document.createElement("a");
+            findPareButton.setAttribute("href", pareTable[i].ja);
+            findPareButton.setAttribute("target", "_blank");
+            findPareButton.setAttribute("style", buttonStyle);
+            findPareButton.innerText = "日语原版";
+            eles[0].insertBefore(findPareButton, eles[0].lastChild.nextSibling);
+          }
 
           let manageButton = document.createElement("a");
-          manageButton.setAttribute("href", `${managePerfix}${pareTable[i].id}`);
+          manageButton.setAttribute(
+            "href",
+            `${managePerfix}${pareTable[i].id}`
+          );
           manageButton.setAttribute("target", "_blank");
           manageButton.setAttribute("style", buttonStyle);
           manageButton.innerText = "管理";
@@ -54,7 +66,12 @@
         }
         break;
       }
-      if (`${pareTable[i].ja}/`.includes(window.location.pathname)) {
+      if (
+        matchedResultJa &&
+        window.location.pathname.includes(matchedResultJa[1]) &&
+        pareTable[i].zh
+      ) {
+        console.log(pareTable[i].zh);
         let eles = document.getElementsByTagName("h1");
         if (eles.length > 0) {
           let findPareButton = document.createElement("a");
