@@ -1,12 +1,14 @@
 // ==UserScript==
 // @name         cybozudevcn-assist
 // @namespace    https://github.com/forestsheep911/tamper-cybozudevcn-assist
-// @version      0.20
+// @version      0.30
 // @description  cybozu开发者网站中文版辅助工具ForDLD成员
 // @author       bxu
+// @license      MIT
 // @match        https://cybozudev.kf5.com/hc/kb/article/*
 // @match        https://developer.cybozu.io/hc/ja/articles/*
 // @require      https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js
+// @require      https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js
 
 // ==/UserScript==
 
@@ -63,6 +65,16 @@
           manageButton.setAttribute("style", buttonStyle);
           manageButton.innerText = "管理";
           eles[0].insertBefore(manageButton, eles[0].lastChild.nextSibling);
+
+          let copyButton = document.createElement("a");
+          copyButton.setAttribute(
+            "data-clipboard-target",
+            ".original-content"
+          );
+          copyButton.setAttribute("style", buttonStyle);
+          copyButton.setAttribute("class", "doccopy");
+          copyButton.innerText = "拷贝文档";
+          eles[0].insertBefore(copyButton, eles[0].lastChild.nextSibling);
         }
         break;
       }
@@ -104,4 +116,7 @@
   if (unlogin404.length > 0) {
     testDrarftAndJump();
   }
+
+  // copy html
+  new ClipboardJS('.doccopy');
 })();
